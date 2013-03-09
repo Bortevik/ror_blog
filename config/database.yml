@@ -1,0 +1,23 @@
+development:
+  adapter:  postgresql
+  encoding: unicode
+  database: ror_blog_dev
+  pool: 5
+  username: qwerty
+  password: asdfvcxz
+  host:     localhost
+
+test:
+  adapter:  postgresql
+  encoding: unicode
+  database: ror_blog_test
+  pool: 5
+  username: qwerty
+  password: asdfvcxz
+  host:     localhost
+
+production:
+  adapter: sqlite3
+  database: db/production.sqlite3
+  pool: 5
+  timeout: 5000
