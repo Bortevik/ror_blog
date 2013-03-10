@@ -10,18 +10,18 @@ guard 'livereload' do
   watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|js|html))).*}) { |m| "/assets/#{m[3]}" }
 end
 
-guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' } do
-  watch('config/application.rb')
-  watch('config/environment.rb')
-  watch('config/environments/test.rb')
-  watch(%r{^config/initializers/.+\.rb$})
-  watch('Gemfile')
-  watch('Gemfile.lock')
-  watch('spec/spec_helper.rb')
-  watch('test/test_helper.rb')
-end
+#guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' } do
+#  watch('config/application.rb')
+#  watch('config/environment.rb')
+#  watch('config/environments/test.rb')
+#  watch(%r{^config/initializers/.+\.rb$})
+#  watch('Gemfile')
+#  watch('Gemfile.lock')
+#  watch('spec/spec_helper.rb')
+#  watch('test/test_helper.rb')
+#end
 
-guard 'rspec', all_after_pass: false, cli: '--drb' do
+guard 'rspec', all_after_pass: false, cli: '--drb --format Fuubar --color' do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})    { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb') { "spec" }
@@ -46,11 +46,18 @@ guard 'rspec', all_after_pass: false, cli: '--drb' do
     ["spec/features/#{m[1]}_spec.rb",
      "spec/features/#{m[1].singularize}_pages_spec.rb"]
   end
+  watch(%r{^spec/features/(.+)_spec\.rb})
 
   # Turnip features and steps
   watch(%r{^spec/acceptance/(.+)\.feature$})
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 
-guard 'webrick' do
+#guard 'webrick', docroot: 'public', cli: '-e development' do
+#end
+
+guard 'rails' do
+  watch('Gemfile.lock')
+  watch(%r{^(config|lib)/.*})
 end
+

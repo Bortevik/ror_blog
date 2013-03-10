@@ -11,16 +11,18 @@ gem 'bootstrap-will_paginate', '0.0.9'
 gem 'jquery-rails',            '2.2.1'
 
 group :development, :test do
-  gem 'rspec-rails', '2.13.0'
-  gem 'guard-rspec', '2.5.0'
-  gem 'guard-spork', '1.5.0'
-  gem 'spork', 			 '0.9.2'
+  gem 'rspec-rails',     '2.13.0'
+  gem 'guard-rspec',     '2.5.0'
+  gem 'guard-spork',     '1.5.0'
+  gem 'spork', 			     '0.9.2'
+  gem 'rails-footnotes', '3.7.9'
+  gem 'fuubar',          '1.1.0'
 end
 
 group :development do
   gem 'annotate',         '2.5.0'
   gem 'guard-livereload', '1.1.3'
-  gem 'guard-webrick',    '0.1.4'
+  gem 'guard-rails',      '0.4.0'
 end
 
 group :assets do

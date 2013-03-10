@@ -1,0 +1,8 @@
+header.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      = link_to "RoR Blog", root_path, id: "logo"
+      nav
+        ul.nav.pull-right
+          li = link_to t('home'), root_path
+          li = link_to t('about'), about_path
