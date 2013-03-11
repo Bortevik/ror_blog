@@ -1,0 +1,6 @@
+.post
+  h3
+    = link_to post.title, post
+  .content
+    = truncate(post.content, length: 1000, separator: ' ')
+  = link_to 'Read more →', post, class: 'btn btn-small'

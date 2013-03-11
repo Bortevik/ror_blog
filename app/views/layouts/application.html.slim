@@ -8,5 +8,11 @@ html
     == render 'layouts/shim'
   body
     == render 'layouts/header'
-    .container
-      = yield
+    .container-fluid
+      .row-fluid
+        .span9
+          - flash.each do |key,value|
+            div class="alert alert-#{key}"
+              button type="button" class="close" data-dismiss="alert" &times;
+              = value
+          = yield

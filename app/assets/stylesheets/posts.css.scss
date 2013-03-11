@@ -1,0 +1,20 @@
+@import "bootstrap";
+.posts {
+  .post {
+    margin-top: 20px;
+    h3 {
+      text-align: left;
+      font-weight: normal;
+      margin: 0;
+      a {
+        color: $grayLight;
+        &:hover {
+          color: #bbb;
+        }
+      }
+    }
+    .content {
+      margin-bottom: 10px;
+    }
+  }
+}
