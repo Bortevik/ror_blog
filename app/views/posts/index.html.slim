@@ -1,5 +1,4 @@
-- provide(:title, 'Posts')
-
 .posts
   - if @posts.any?
     == render @posts
+    = will_paginate

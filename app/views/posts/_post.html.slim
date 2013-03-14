@@ -1,6 +1,15 @@
 .post
-  h3
+  h1.title
     = link_to post.title, post
+  .post-info
+    = time_tag post.created_at
   .content
     = truncate(post.content, length: 1000, separator: ' ')
-  = link_to 'Read more →', post, class: 'btn btn-small'
+  .read-more
+    = link_to 'Read more →', post, class: 'btn btn-small pull-left'
+    .btn-group.pull-right
+      = link_to icon('pencil'), edit_post_path(post), class: 'btn btn-small'
+      = link_to icon('trash'), post_path(post),\
+                                class: 'btn btn-small',\
+                                method: :delete,\
+                                confirm: 'Are you sure?'

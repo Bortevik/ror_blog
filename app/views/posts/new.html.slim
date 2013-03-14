@@ -1,15 +1,8 @@
-- provide('title', 'New post creation')
+- provide(:title, 'New post creation')
 
 .row-fluid
   .span10.offset1
     h1 Create new post
     = form_for(@post) do |f|
-      = render 'shared/error_mesages', object: f.object
-
-      = f.label :title
-      = f.text_field :title
-
-      = f.label :content
-      = f.text_area :content, rows: 10
-
+      = render 'form_fields', f: f
       = f.submit 'Create post', class: "btn"

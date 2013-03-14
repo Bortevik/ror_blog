@@ -1,5 +1,6 @@
 - provide(:title, @post.title)
 
 article
-  h2 = @post.title
+  h1.title = @post.title
+  = time_tag @post.created_at
   .content = @post.content
