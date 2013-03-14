@@ -1,6 +1,8 @@
 RorBlog::Application.routes.draw do
 
-  root :to => 'static_pages#home'
+  resources :posts, except: :index
+
+  root :to => 'posts#index'
 
   # Static pages
   match 'about' => "static_pages#about"

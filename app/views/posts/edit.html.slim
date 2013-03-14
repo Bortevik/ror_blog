@@ -1,0 +1,8 @@
+- provide(:title, 'Edit post')
+
+.row-fluid
+  .span10.offset1
+    h1 Edit post
+    = form_for(@post) do |f|
+      = render 'form_fields', f: f
+      = f.submit 'Update post', class: "btn"

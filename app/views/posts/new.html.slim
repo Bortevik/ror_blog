@@ -1,0 +1,8 @@
+- provide(:title, 'New post creation')
+
+.row-fluid
+  .span10.offset1
+    h1 Create new post
+    = form_for(@post) do |f|
+      = render 'form_fields', f: f
+      = f.submit 'Create post', class: "btn"

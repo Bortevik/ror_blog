@@ -9,4 +9,8 @@ module ApplicationHelper
       "#{base_title} | #{page_title}"
     end
   end
+
+  def icon(type)
+    content_tag(:i, nil, class: "icon-#{type}")
+  end
 end
