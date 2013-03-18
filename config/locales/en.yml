@@ -4,3 +4,9 @@
 en:
   about: 'About me'
   home:  'Home'
+
+  activerecord:
+    attributes:
+      user:
+        password_digest: 'Password'
+        password_confirmation: 'Confirm password'

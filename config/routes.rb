@@ -1,6 +1,11 @@
 RorBlog::Application.routes.draw do
 
+  resources :users
   resources :posts, except: :index
+
+  match '/signup',  to: 'users#new'
+  match '/signin',  to: 'sessions#new'
+  match '/signout', to: 'sessions#destroy' , via: :delete
 
   root :to => 'posts#index'
 

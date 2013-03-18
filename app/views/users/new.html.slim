@@ -1,0 +1,8 @@
+- provide(:title, 'Sign up')
+
+.row-fluid
+  .span6.offset3
+    h1 Sign up
+    = form_for(@user) do |f|
+      = render 'form_fields', f: f
+      = f.submit 'Sign up', class: "btn"

@@ -1,0 +1,9 @@
+- provide(:title, 'Edit profile')
+
+.row-fluid
+  .span6.offset3
+    h1 Edit profile
+    = form_for(@user) do |f|
+      = render 'form_fields', f: f
+      = f.submit 'Save changes', class: "btn"
+

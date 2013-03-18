@@ -1,0 +1,11 @@
+- provide(:title, 'User profile')
+
+.profile
+  h1 User profile
+  table
+    tr
+      td Name:
+      td = @user.name
+    tr
+      td Email:
+      td = @user.email

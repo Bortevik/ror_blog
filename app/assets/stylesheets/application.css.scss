@@ -24,6 +24,15 @@
   box-sizing: border-box;
 }
 
+@mixin gray_link {
+  a {
+    color: $gray;
+    &:hover {
+      color: $grayLight;
+    }
+  }
+}
+
 /* universal */
 
 html {
@@ -73,12 +82,7 @@ h1.title {
   font-size: 1.8em;
   margin: 5px 0;
   text-align: left;
-  a {
-    color: $gray;
-    &:hover {
-      color: $grayLight;
-    }
-  }
+  @include gray_link
 }
 
 p {
@@ -153,4 +157,19 @@ time {
 
 .icon-remove {
   color: red;
+}
+
+/* user */
+
+.profile {
+  td {
+    padding: 10px;
+  }
+}
+
+.users {
+  a.red {
+    color: darkred;
+  }
+  @include gray_link
 }

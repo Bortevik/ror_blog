@@ -112,7 +112,13 @@ describe 'Post pages' do
     it 'should delete a post' do
       expect { find('a[@data-method="delete"]').click }.to change(Post, :count).by(-1)
     end
-    it { current_path.should == '/' }
+
+    describe 'after destruction' do
+      before { find('a[@data-method="delete"]').click }
+
+      it { current_path.should == '/' }
+      it { should have_success_message('Post was deleted!') }
+    end
   end
 
   describe 'index' do
@@ -151,6 +157,7 @@ describe 'Post pages' do
     let(:post) { FactoryGirl.create(:post) }
     before { visit "/posts/#{post.id}" }
 
+    it { should have_title(post.title) }
     it { should have_headline(post.title) }
     it { should have_selector('time', text: post.created_at.to_s(:long)) }
     it { should have_content(post.content) }

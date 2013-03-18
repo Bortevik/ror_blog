@@ -64,5 +64,13 @@ module RorBlog
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Configure generators values.
+    config.generators do |g|
+      g.stylesheets    false
+      g.assets         false
+      g.helper         false
+      g.test_framework false
+    end
   end
 end
