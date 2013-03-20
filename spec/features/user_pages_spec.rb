@@ -16,6 +16,7 @@ describe 'User pages' do
       it { should have_content('error') }
       it { should have_content("Name can't be blank") }
       it { should have_content("Email can't be blank") }
+      it { should have_content("Password can't be blank") }
       it { should have_content("Confirm password can't be blank") }
 
       describe 'when name that is too short' do

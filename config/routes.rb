@@ -1,5 +1,6 @@
 RorBlog::Application.routes.draw do
 
+  resources :sessions, only: :create
   resources :users
   resources :posts, except: :index
 
