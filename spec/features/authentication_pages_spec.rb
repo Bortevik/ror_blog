@@ -34,5 +34,16 @@ describe 'Authentication' do
         it { current_path.should == '/' }
       end
     end
+
+    describe 'when user not yet activated' do
+      let(:not_activated_user) { create(:not_activated_user) }
+      before do
+        clear_emails
+        sign_in not_activated_user
+      end
+
+      it { should have_error_message 'Your account not yet activated' }
+      it { open_email(not_activated_user.email).should be_present }
+    end
   end
 end

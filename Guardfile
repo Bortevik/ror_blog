@@ -53,9 +53,6 @@ guard 'rspec', all_after_pass: false, cli: '--drb --format Fuubar --color' do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 
-#guard 'webrick', docroot: 'public', cli: '-e development' do
-#end
-
 guard 'rails' do
   watch('Gemfile.lock')
   watch(%r{^(config|lib)/.*})

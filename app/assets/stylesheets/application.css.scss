@@ -86,7 +86,7 @@ h1.title {
 }
 
 p {
-  font-size: 1.1em;
+  font-size: 1em;
   line-height: 1.7em;
 }
 
@@ -118,6 +118,16 @@ input, textarea, select, .uneditable-input {
 
 input {
   height: auto !important;
+}
+
+.remember_me {
+  margin-bottom: 10px;
+  input {
+    vertical-align: baseline;
+  }
+  label {
+    display: inline;
+  }
 }
 
 #error_explanation {

@@ -1,4 +1,20 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                   :integer          not null, primary key
+#  name                 :string(255)
+#  email                :string(255)
+#  password_digest      :string(255)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  auth_token           :string(255)
+#  secret_token         :string(255)
+#  secret_token_sent_at :datetime
+#
+
 require 'spec_helper'
+include Capybara::Email::DSL
 
 describe User do
 
@@ -9,6 +25,8 @@ describe User do
                      password_confirmation: 'foobar')
   end
 
+  let(:user) { create(:user) }
+
   subject { @user }
 
   it { should respond_to(:name) }
@@ -16,6 +34,12 @@ describe User do
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:auth_token) }
+  it { should respond_to(:secret_token) }
+  it { should respond_to(:secret_token_sent_at) }
+  it { should respond_to(:activated) }
+  it { should respond_to(:generate_token) }
+  it { should respond_to(:send_password_reset) }
 
   it { should be_valid }
 
@@ -97,7 +121,7 @@ describe User do
     it { should_not be_valid }
   end
 
-  describe "when password don't match confirmation" do
+  describe "when password doesn't match confirmation" do
     before { @user.password_confirmation = 'mismatch' }
     it { should_not be_valid }
   end
@@ -107,14 +131,38 @@ describe User do
     let(:found_user) { User.find_by_email(@user.email) }
 
     describe 'with valid password' do
-      it { should == found_user.authenticate(@user.password) }
+      it { should eq found_user.authenticate(@user.password) }
     end
 
     describe 'with invalid password' do
       let(:user_for_invalid_password) { found_user.authenticate('invalid') }
 
-      it { should_not == user_for_invalid_password }
+      it { should_not eq user_for_invalid_password }
       specify { user_for_invalid_password.should be_false }
     end
+  end
+
+  describe 'create auth token when user created' do
+    before { @user.save! }
+    specify { @user.auth_token.should be_present }
+  end
+
+  describe 'generate token' do
+    let(:last_token) { user.generate_token(:secret_token) }
+    before { user.generate_token(:secret_token) }
+
+    specify { user.secret_token.should_not eq last_token }
+  end
+
+  describe 'send password reset' do
+    before { user.send_password_reset }
+
+    specify { user.reload.secret_token_sent_at.should be_present }
+    specify { open_email(user.email).should be_present }
+  end
+
+  describe 'send activation link' do
+    before { user.send_activation_link }
+    specify { open_email(user.email).should be_present }
   end
 end

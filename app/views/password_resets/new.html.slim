@@ -1,0 +1,13 @@
+- provide :title, 'Reset password'
+
+.password_reset
+  .row-fluid
+    .span6.offset3
+      h1 Reset password
+
+      = form_tag password_resets_path do
+
+        = label_tag :email
+        = text_field_tag :email
+
+        = submit_tag 'Reset password', class: 'btn'

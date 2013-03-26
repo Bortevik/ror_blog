@@ -1,12 +1,16 @@
 RorBlog::Application.routes.draw do
 
+  get "password_resets/new"
+
   resources :sessions, only: :create
   resources :users
   resources :posts, except: :index
+  resources :password_resets
 
-  match '/signup',  to: 'users#new'
-  match '/signin',  to: 'sessions#new'
-  match '/signout', to: 'sessions#destroy' , via: :delete
+  match 'signup',   to: 'users#new'
+  match 'activate/:id', to: 'users#activate', as: 'activate'
+  match 'signin',   to: 'sessions#new'
+  match 'signout',  to: 'sessions#destroy', via: :delete
 
   root :to => 'posts#index'
 
@@ -59,10 +63,6 @@ RorBlog::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
 
   # See how all your routes lay out with "rake routes"
 

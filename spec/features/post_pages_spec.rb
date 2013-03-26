@@ -4,7 +4,7 @@ describe 'Post pages' do
 
   subject { page }
 
-  shared_examples_for 'save with invalid information' do
+  shared_examples_for 'save post with invalid information' do
 
     it 'should not save a post' do
       expect {click_button submit }.not_to change(Post, :count)
@@ -28,7 +28,7 @@ describe 'Post pages' do
     end
   end
 
-  shared_examples_for 'save with valid information' do
+  shared_examples_for 'save post with valid information' do
 
     describe 'after saving post' do
       before { click_button submit }
@@ -49,7 +49,7 @@ describe 'Post pages' do
     end
 
     describe 'with invalid information' do
-      it_should_behave_like 'save with invalid information'
+      it_should_behave_like 'save post with invalid information'
     end
 
     describe 'with valid information' do
@@ -62,7 +62,7 @@ describe 'Post pages' do
       it 'should create a post' do
         expect { click_button submit }.to change(Post, :count).by(1)
       end
-      it_should_behave_like 'save with valid information'
+      it_should_behave_like 'save post with valid information'
     end
   end
 
@@ -86,7 +86,7 @@ describe 'Post pages' do
         fill_in 'Content', with: ''
       end
 
-      it_should_behave_like 'save with invalid information'
+      it_should_behave_like 'save post with invalid information'
     end
 
     describe 'with valid information' do
@@ -99,7 +99,7 @@ describe 'Post pages' do
       it 'should not create a new post' do
         expect { click_button submit }.not_to change(Post, :count)
       end
-      it_should_behave_like 'save with valid information'
+      it_should_behave_like 'save post with valid information'
     end
   end
 

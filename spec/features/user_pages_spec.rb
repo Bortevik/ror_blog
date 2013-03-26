@@ -4,7 +4,7 @@ describe 'User pages' do
 
   subject { page }
 
-  shared_examples_for 'save with invalid information' do
+  shared_examples_for 'save user with invalid information' do
 
     it 'should not create a user' do
       expect {click_button submit }.not_to change(User, :count)
@@ -48,7 +48,7 @@ describe 'User pages' do
 
       describe 'when same email already is taken' do
         before do
-          email = FactoryGirl.create(:user).email
+          email = create(:user).email
           fill_in 'Email', with: email.upcase
           click_button submit
         end
@@ -57,7 +57,7 @@ describe 'User pages' do
     end
   end
 
-  describe 'user creation' do
+  describe 'signing up' do
     let(:submit) { 'Sign up' }
     before { visit '/signup' }
 
@@ -67,13 +67,15 @@ describe 'User pages' do
     end
 
     describe 'with invalid information' do
-      it_should_behave_like 'save with invalid information'
+      it_should_behave_like 'save user with invalid information'
     end
 
     describe 'with valid information' do
+      let(:email) { 'example@example.com' }
       before do
+        clear_emails
         fill_in 'Name',             with: 'Joe'
-        fill_in 'Email',            with: 'example@example.com'
+        fill_in 'Email',            with: email
         fill_in 'Password',         with: 'foobar'
         fill_in 'Confirm password', with: 'foobar'
       end
@@ -82,18 +84,35 @@ describe 'User pages' do
         expect { click_button submit }.to change(User, :count).by(1)
       end
 
-      describe 'after creating user' do
+      describe 'send email' do
         before { click_button submit }
 
-        it { current_path.should == '/' }
-        it { should have_success_message('New account created!') }
+        it { open_email(email).should be_present }
+        it { should have_success_message 'Activation link was sent'}
+      end
+
+      describe 'account activation' do
+
+        specify 'with invalid token' do
+          expect do
+            visit activate_path('somthing')
+          end.to raise_exception(ActiveRecord::RecordNotFound)
+        end
+
+        describe 'with valid token' do
+          let(:user) { create(:user, secret_token: 'token') }
+          before { visit activate_path(user.secret_token) }
+
+          it { should have_success_message 'Your account was activated' }
+          it { current_path.should eq root_path }
+        end
       end
     end
   end
 
   describe 'user profile edition' do
     let(:submit) { 'Save changes' }
-    let(:user) { FactoryGirl.create(:user)}
+    let(:user) { create(:user)}
     before do
       visit "/users/#{user.id}/edit"
     end
@@ -113,7 +132,7 @@ describe 'User pages' do
         fill_in 'Confirm password', with: ''
       end
 
-      it_should_behave_like 'save with invalid information'
+      it_should_behave_like 'save user with invalid information'
     end
 
     describe 'with valid information' do
@@ -128,11 +147,11 @@ describe 'User pages' do
         expect { click_button submit }.not_to change(User, :count)
       end
 
-      describe 'after updating prafile' do
+      describe 'after updating profile' do
         before { click_button submit }
         let(:updated_user) { User.first }
 
-        it { current_path.should == "/users/#{updated_user.id}" }
+        it { current_path.should eq "/users/#{updated_user.id}" }
         it { should have_success_message('Profile was updated!') }
       end
     end
@@ -140,7 +159,7 @@ describe 'User pages' do
 
   describe 'user destruction' do
     before do
-      FactoryGirl.create(:user)
+      create(:user)
       visit '/users'
     end
 
@@ -151,15 +170,15 @@ describe 'User pages' do
     describe 'after destruction' do
       before { find('a[@data-method="delete"]').click }
 
-      it { current_path.should == '/users' }
+      it { current_path.should eq '/users' }
       it { should have_success_message('User was deleted!') }
     end
   end
 
   describe 'index' do
     before do
-      FactoryGirl.create(:user)
-      FactoryGirl.create(:user)
+      create(:user)
+      create(:user)
       visit '/users'
     end
     let(:users) { User.all }
@@ -173,7 +192,7 @@ describe 'User pages' do
 
     describe 'pagination' do
       before do
-        35.times { FactoryGirl.create(:user) }
+        35.times { create(:user) }
         visit '/users'
         click_link '2'
       end
@@ -188,7 +207,7 @@ describe 'User pages' do
   end
 
   describe 'show page' do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { create(:user) }
     before { visit "/users/#{user.id}" }
 
     it { should have_title('User profile') }

@@ -1,0 +1,18 @@
+- provide :title, 'Update password'
+
+.password_reset
+  .row-fluid
+    .span6.offset3
+      h1 Update password
+
+      = form_for @user, url: password_reset_path(params[:id]) do |f|
+
+        == render 'shared/error_mesages', object: f.object
+
+        = f.label :password
+        = f.password_field :password
+
+        = f.label :password_confirmation
+        = f.password_field :password_confirmation
+
+        = f.submit 'Update password', class: 'btn'

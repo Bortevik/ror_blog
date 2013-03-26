@@ -15,11 +15,22 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      flash[:success] = 'New account created!'
+      @user.send_activation_link
+      flash[:success] = 'Activation link was sent to your email'
       redirect_to root_url
     else
       render 'new'
     end
+  end
+
+  def activate
+    user = User.find_by_secret_token!(params[:id])
+    if user.update_attribute(:activated, true)
+      flash[:success] = 'Your account was activated!'
+    else
+      flash[:error] = 'Activation failed'
+    end
+    redirect_to root_url
   end
 
   def edit

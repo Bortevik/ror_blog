@@ -38,4 +38,5 @@ group :test do
   gem 'libnotify', 	        '0.8.0'
   gem 'factory_girl_rails', '4.2.1'
   gem 'database_cleaner',   '0.9.1'
+  gem 'capybara-email'
 end
