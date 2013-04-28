@@ -7,9 +7,12 @@
     = truncate(post.content, length: 1000, separator: ' ')
   .read-more
     = link_to 'Read more →', post, class: 'btn btn-small pull-left'
-    .btn-group.pull-right
-      = link_to icon('pencil'), edit_post_path(post), class: 'btn btn-small'
-      = link_to icon('trash'), post_path(post),\
-                                class: 'btn btn-small',\
-                                method: :delete,\
-                                confirm: 'Are you sure?'
+    - if can?(:update, post) || can?(:destroy, post)
+      .btn-group.pull-right
+        - if can? :update, post
+          = link_to icon('pencil'), edit_post_path(post), class: 'btn btn-small'
+        - if can? :destroy, post
+          = link_to icon('trash'), post_path(post),\
+                                   class: 'btn btn-small',\
+                                   method: :delete,\
+                                   confirm: 'Are you sure?'

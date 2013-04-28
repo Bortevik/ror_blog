@@ -29,9 +29,21 @@ describe 'Authentication' do
       it { should_not have_link('', href: signin_path) }
 
       describe 'followed by signout' do
-        before { find('a[@href="/signout"]').click }
+        before { signout }
         it { should have_link('', href: signin_path) }
         it { current_path.should == '/' }
+      end
+    end
+
+    describe 'when user already signed in' do
+      before do
+        user = create(:user)
+        sign_in user
+        visit signin_path
+      end
+
+      it 'should redirect to home page' do
+        current_path.should eq '/'
       end
     end
 

@@ -39,6 +39,7 @@ module SessionsHelper
 
   def not_activated_user
     @user = User.find_by_email(params[:email].downcase)
+    return if @user.nil?
     unless @user.activated
       flash[:error] = 'Your account not yet activated. Check your email box
                        for email with activation link'

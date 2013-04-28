@@ -4,6 +4,8 @@ describe 'Post pages' do
 
   subject { page }
 
+  let(:admin) { create(:admin) }
+
   shared_examples_for 'save post with invalid information' do
 
     it 'should not save a post' do
@@ -41,11 +43,27 @@ describe 'Post pages' do
 
   describe 'post creation' do
     let(:submit) { 'Create post' }
-    before { visit '/posts/new' }
+    before do
+      sign_in admin
+      visit new_post_path
+    end
 
     describe 'page' do
+
       it { should have_headline('Create new post') }
       it { should have_title('New post creation')}
+
+      describe 'without permissions' do
+        before do
+          signout
+          user = create(:user)
+          sign_in user
+          visit new_post_path
+        end
+
+        it { should have_error_message 'Access denied!' }
+        it { current_path.should eq root_path }
+      end
     end
 
     describe 'with invalid information' do
@@ -68,9 +86,10 @@ describe 'Post pages' do
 
   describe 'post edition' do
     let(:submit) { 'Update post' }
-    let(:post) { FactoryGirl.create(:post)}
+    let(:post) { create(:post)}
     before do
-      visit "/posts/#{post.id}/edit"
+      sign_in admin
+      visit edit_post_path(post)
     end
 
     describe 'edit page' do
@@ -78,6 +97,19 @@ describe 'Post pages' do
       it { should have_title('Edit post') }
       it { find_field('Title').value.should eq(post.title) }
       it { find_field('Content').value.should eq(post.content) }
+
+      describe 'without permission' do
+        before do
+          signout
+          user = create(:user)
+          sign_in user
+          visit edit_post_path(post)
+        end
+
+        it 'should redirect to home page' do
+          current_path.should eq root_path
+        end
+      end
     end
 
     describe 'with invalid information' do
@@ -105,16 +137,19 @@ describe 'Post pages' do
 
   describe 'post destruction' do
     before do
-      FactoryGirl.create(:post)
-      visit '/'
+      create(:post)
+      sign_in admin
+      visit root_path
     end
 
     it 'should delete a post' do
-      expect { find('a[@data-method="delete"]').click }.to change(Post, :count).by(-1)
+      expect do
+        first('div.posts a[@data-method="delete"]').click
+      end.to change(Post, :count).by(-1)
     end
 
     describe 'after destruction' do
-      before { find('a[@data-method="delete"]').click }
+      before { first('div.posts a[@data-method="delete"]').click }
 
       it { current_path.should == '/' }
       it { should have_success_message('Post was deleted!') }
@@ -123,11 +158,19 @@ describe 'Post pages' do
 
   describe 'index' do
     before do
-      FactoryGirl.create(:post)
-      FactoryGirl.create(:post)
+      create(:post)
+      create(:post)
       visit '/'
     end
     let(:posts) { Post.all }
+
+    it 'should not show edit icon to user not have permissions to edit' do
+      should_not have_link('', href: edit_post_path(posts[0]))
+    end
+
+    it 'should not show delete icon to user not have permissions to delete' do
+      should_not have_selector('div.posts a[@data-method="delete"]')
+    end
 
     it 'should render posts' do
       posts.each do |post|
@@ -139,7 +182,7 @@ describe 'Post pages' do
 
     describe 'pagination' do
       before do
-        10.times { FactoryGirl.create(:post) }
+        10.times { create(:post) }
         visit '/'
         click_link '2'
       end
@@ -154,7 +197,7 @@ describe 'Post pages' do
   end
 
   describe 'show page' do
-    let(:post) { FactoryGirl.create(:post) }
+    let(:post) { create(:post) }
     before { visit "/posts/#{post.id}" }
 
     it { should have_title(post.title) }

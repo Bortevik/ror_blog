@@ -13,46 +13,37 @@ describe 'User pages' do
     describe 'after submitting' do
       before { click_button submit }
 
-      it { should have_content('error') }
-      it { should have_content("Name can't be blank") }
-      it { should have_content("Email can't be blank") }
-      it { should have_content("Password can't be blank") }
-      it { should have_content("Confirm password can't be blank") }
-
-      describe 'when name that is too short' do
-        before do
-          fill_in 'Name', with: 'a' * 2
-          click_button submit
-        end
-
-        it { should have_content('Name is too short (minimum is 3 characters)')}
+      it 'with blank fields show error messages' do
+        should have_content('error')
+        should have_content("Name can't be blank")
+        should have_content("Email can't be blank")
+        should have_content("Password can't be blank")
+        should have_content("Confirm password can't be blank")
       end
 
-      describe 'when name that is too long' do
-        before do
-          fill_in 'Name', with: 'a' * 51
-          click_button submit
-        end
-
-        it { should have_content('Name is too long (maximum is 50 characters)')}
+      it 'when name that is too short show error message' do
+        fill_in 'Name', with: 'a' * 2
+        click_button submit
+        should have_content('Name is too short (minimum is 3 characters)')
       end
 
-      describe 'when email is invalid' do
-        before do
-          fill_in 'Email', with: 'example.example.com'
-          click_button submit
-        end
-
-        it { should have_content('Email is invalid')}
+      it 'when name that is too long show error message' do
+        fill_in 'Name', with: 'a' * 51
+        click_button submit
+        should have_content('Name is too long (maximum is 50 characters)')
       end
 
-      describe 'when same email already is taken' do
-        before do
-          email = create(:user).email
-          fill_in 'Email', with: email.upcase
-          click_button submit
-        end
-        it { should have_content('Email has already been taken')}
+      it 'when email is invalid show error message' do
+        fill_in 'Email', with: 'example.example.com'
+        click_button submit
+        should have_content('Email is invalid')
+      end
+
+      it 'when same email already is taken show error message' do
+        email = create(:user).email
+        fill_in 'Email', with: email.upcase
+        click_button submit
+        should have_content('Email has already been taken')
       end
     end
   end
@@ -61,9 +52,9 @@ describe 'User pages' do
     let(:submit) { 'Sign up' }
     before { visit '/signup' }
 
-    describe 'page' do
-      it { should have_headline('Sign up') }
-      it { should have_title('Sign up')}
+    it 'page render properly' do
+      should have_headline('Sign up')
+      should have_title('Sign up')
     end
 
     describe 'with invalid information' do
@@ -114,7 +105,8 @@ describe 'User pages' do
     let(:submit) { 'Save changes' }
     let(:user) { create(:user)}
     before do
-      visit "/users/#{user.id}/edit"
+      sign_in user
+      visit edit_user_path user
     end
 
     describe 'edit page' do
@@ -122,6 +114,14 @@ describe 'User pages' do
       it { should have_title('Edit profile') }
       it { find_field('Name').value.should eq(user.name) }
       it { find_field('Email').value.should eq(user.email) }
+
+      it 'without permission redirect to home page' do
+        signout
+        another_user = create(:user)
+        sign_in another_user
+        visit edit_user_path(user)
+        current_path.should eq root_path
+      end
     end
 
     describe 'with invalid information' do
@@ -149,29 +149,35 @@ describe 'User pages' do
 
       describe 'after updating profile' do
         before { click_button submit }
-        let(:updated_user) { User.first }
 
-        it { current_path.should eq "/users/#{updated_user.id}" }
-        it { should have_success_message('Profile was updated!') }
+        it 'redirect to profile' do
+          current_path.should eq user_path(user)
+        end
+        it 'have success message' do
+          should have_success_message('Profile was updated!')
+        end
       end
     end
   end
 
   describe 'user destruction' do
     before do
-      create(:user)
-      visit '/users'
+      user = create(:user)
+      sign_in user
+      visit user_path(user)
     end
 
     it 'should delete a user' do
-      expect { find('a[@data-method="delete"]').click }.to change(User, :count).by(-1)
+      expect do
+        click_link 'Delete account'
+      end.to change(User, :count).by(-1)
     end
 
     describe 'after destruction' do
-      before { find('a[@data-method="delete"]').click }
+      before { click_link 'Delete account' }
 
-      it { current_path.should eq '/users' }
-      it { should have_success_message('User was deleted!') }
+      it { current_path.should eq root_path }
+      it { should have_success_message('Your account was deleted') }
     end
   end
 
@@ -179,7 +185,9 @@ describe 'User pages' do
     before do
       create(:user)
       create(:user)
-      visit '/users'
+      admin = create(:admin)
+      sign_in admin
+      visit users_path
     end
     let(:users) { User.all }
 
@@ -193,7 +201,7 @@ describe 'User pages' do
     describe 'pagination' do
       before do
         35.times { create(:user) }
-        visit '/users'
+        visit users_path
         click_link '2'
       end
       after  { User.delete_all }
@@ -208,11 +216,24 @@ describe 'User pages' do
 
   describe 'show page' do
     let(:user) { create(:user) }
-    before { visit "/users/#{user.id}" }
+    before do
+      sign_in user
+      visit "/users/#{user.id}"
+    end
 
     it { should have_title('User profile') }
     it { should have_headline('User profile') }
     it { should have_content(user.name) }
     it { should have_content(user.email) }
+    it { should have_link('Edit profile', href: edit_user_path(user)) }
+    it { should have_link('Delete account', href: user_path(user)) }
+
+    it 'without permission redirect to home page' do
+      another_user = create(:user)
+      signout
+      sign_in another_user
+      visit user_path(user)
+      current_path.should eq root_path
+    end
   end
 end

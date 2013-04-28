@@ -10,7 +10,7 @@ development:
 test:
   adapter:  postgresql
   encoding: unicode
-  database: ror_blog_test
+  database: ror_blog_test<%= ENV['TEST_ENV_NUMBER'] %>
   pool: 5
   username: qwerty
   password: asdfvcxz

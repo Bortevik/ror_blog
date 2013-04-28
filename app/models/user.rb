@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation
   has_secure_password
 
+  has_many :assignments
+  has_many :roles, through: :assignments
+
   before_save { email.downcase! }
   before_create { generate_token :auth_token }
 
@@ -31,5 +34,10 @@ class User < ActiveRecord::Base
     generate_token(:secret_token)
     save!(validate: false)
     UserMailer.activate_account(self).deliver
+  end
+
+  def role?(symbol)
+    role = Role.find_by_name(symbol.to_s)
+    self.roles.include?(role)
   end
 end

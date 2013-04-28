@@ -1,5 +1,17 @@
-# A sample Guardfile
-# More info at https://github.com/guard/guard#readme
+notification :tmux,
+  :display_message => true,
+  :timeout => 5, # in seconds
+  :default_message_format => '%s >> %s',
+  # the first %s will show the title, the second the message
+  # Alternately you can also configure *success_message_format*,
+  # *pending_message_format*, *failed_message_format*
+  :line_separator => ' > ', # since we are single line we need a separator
+  :color_location => 'status-left-bg' # to customize which tmux element will change color
+
+guard 'rails' do
+  watch('Gemfile.lock')
+  watch(%r{^(config|lib)/.*})
+end
 
 guard 'livereload' do
   watch(%r{app/views/.+\.(erb|haml|slim)$})
@@ -10,18 +22,22 @@ guard 'livereload' do
   watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|js|html))).*}) { |m| "/assets/#{m[3]}" }
 end
 
-#guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' } do
-#  watch('config/application.rb')
-#  watch('config/environment.rb')
-#  watch('config/environments/test.rb')
-#  watch(%r{^config/initializers/.+\.rb$})
-#  watch('Gemfile')
-#  watch('Gemfile.lock')
-#  watch('spec/spec_helper.rb')
-#  watch('test/test_helper.rb')
-#end
+guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' }, bundler: false do
+  watch('config/application.rb')
+  watch('config/environment.rb')
+  watch('config/environments/test.rb')
+  watch(%r{^config/environments/.+\.rb$})
+  watch(%r{^config/initializers/.+\.rb$})
+  watch('Gemfile')
+  watch('Gemfile.lock')
+  watch('spec/spec_helper.rb') { :rspec }
+  watch(%r{^spec/support/.+\.rb$})
+end
 
-guard 'rspec', all_after_pass: false, cli: '--drb --format Fuubar --color' do
+guard 'rspec', all_after_pass: false,
+               all_on_start: true,
+               parallel: true,
+               cli: '--drb --format Fuubar --color' do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})    { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb') { "spec" }
@@ -52,9 +68,3 @@ guard 'rspec', all_after_pass: false, cli: '--drb --format Fuubar --color' do
   watch(%r{^spec/acceptance/(.+)\.feature$})
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
-
-guard 'rails' do
-  watch('Gemfile.lock')
-  watch(%r{^(config|lib)/.*})
-end
-

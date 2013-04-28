@@ -5,7 +5,12 @@
   table
     tr
       td Name:
-      td = @user.name
+      td: b = @user.name
     tr
       td Email:
-      td = @user.email
+      td: b = @user.email
+p
+  =' link_to 'Edit profile', edit_user_path(@user), class: 'btn btn-warning'
+  = link_to 'Delete account', user_path(@user), class: 'btn btn-danger',
+                                                method: :delete,
+                                                confirm: 'Are you sure?'

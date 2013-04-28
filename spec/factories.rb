@@ -7,6 +7,14 @@ FactoryGirl.define do
     content { generate(:random_string) }
   end
 
+  factory :role do
+    name 'foo'
+
+    factory :admin_role do
+      name 'admin'
+    end
+  end
+
   factory :user do
     name  { Faker::Name.name }
     email { Faker::Internet.email }
@@ -16,6 +24,13 @@ FactoryGirl.define do
 
     factory :not_activated_user do
       activated false
+    end
+
+    factory :admin do
+      after(:create) do |user|
+        admin_role = create(:admin_role)
+        user.assignments.create!(role_id: admin_role.id)
+      end
     end
   end
 end
