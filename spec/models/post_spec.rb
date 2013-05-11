@@ -20,6 +20,8 @@ describe Post do
 
   it { should respond_to(:title) }
   it { should respond_to(:content) }
+  it { should respond_to(:comments) }
+  it { should respond_to(:comments_count) }
 
   it { should be_valid }
 

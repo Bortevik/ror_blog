@@ -1,0 +1,15 @@
+a name="comment_#{comment.id}"
+.comment
+  - if comment.deleted?
+    | ......
+  - else
+    .comment_creation
+      span.commenter =' comment.user.try(:name) || 'Guest'
+      =' time_tag comment.created_at
+      =' link_to '#', "#comment_#{comment.id}", class: 'link_to_comment'
+      - if can? :destroy, comment
+        =' link_to icon('trash'), comment_path(comment), method: :delete,
+                                                         confirm: 'Are you sure?',
+                                                         class: 'red'
+    .body
+      = comment.body

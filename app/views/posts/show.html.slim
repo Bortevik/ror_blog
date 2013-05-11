@@ -4,3 +4,15 @@ article
   h1.title = @post.title
   = time_tag @post.created_at
   .content = @post.content
+
+hr
+== render 'comments/form'
+a name='comments'
+
+- unless @comments.empty?
+  hr
+  .comments
+    h4
+      =' icon('comments-alt')
+      | Comments(#{@comments.count})
+    == render @comments

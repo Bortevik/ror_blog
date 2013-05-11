@@ -6,6 +6,7 @@ RorBlog::Application.routes.draw do
   resources :users
   resources :posts, except: :index
   resources :password_resets
+  resources :comments
 
   match 'signup',   to: 'users#new'
   match 'activate/:id', to: 'users#activate', as: 'activate'
