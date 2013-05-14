@@ -1,13 +1,4 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the top of the
- * compiled file, but it's generally better to create a new file per style scope.
- *
  *= require_self
  *= require_tree .
  *= require _font-awesome
@@ -39,10 +30,6 @@ html {
   overflow-y: scroll;
 }
 
-body {
-  padding: 60px 20px 0;
-}
-
 section {
   overflow: auto;
 }
@@ -56,6 +43,11 @@ textarea {
   h1 {
     margin-bottom: 10px;
   }
+}
+
+.main {
+  padding-top: 20px;
+  padding-left: 20px;
 }
 
 /* typography */
@@ -88,6 +80,19 @@ h1.title {
 p {
   font-size: 1em;
   line-height: 1.7em;
+}
+
+a {
+  color: #6DA3BD;
+  &:visited {
+    color: #909;
+  }
+  &:hover {
+    color: #4D7285;
+  }
+  &.red {
+    color: $red;
+  }
 }
 
 /* header */
@@ -151,12 +156,23 @@ input {
     .content {
       margin-bottom: 10px;
     }
+    .infopanel {
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 0.9em;
+      color: $gray;
+      a {
+        margin-right: 10px;
+        text-decoration: none;
+      }
+    }
   }
 }
 
 /* post */
 
 time {
+  margin-right: 10px;
   font-size: 0.8em;
   color: $grayLight;
 }
@@ -167,6 +183,34 @@ time {
 
 .icon-remove {
   color: red;
+}
+
+.comment_form {
+  width: 70%;
+}
+
+/* comment */
+
+.comment {
+  margin-top: 25px;
+}
+
+.comment .body {
+  border-top: 1px solid #eee;
+  padding-top: 5px;
+}
+
+.comment_creation {
+  font-size: 0.9em;
+  a {
+    margin-right: 10px;
+    text-decoration: none;
+  }
+  span.commenter {
+    margin-right: 10px;
+    font-weight: bold;
+    color: $gray;
+  }
 }
 
 /* user */

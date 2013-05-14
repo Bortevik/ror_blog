@@ -1,0 +1,10 @@
+.comment_form
+  = form_for @comment do |f|
+
+    = f.hidden_field :post_id, value: @post.id, name: 'post_id'
+
+    = f.text_area :body, rows: 3, placeholder: 'Enter your comment'
+
+    = f.simple_captcha placeholder: 'Enter code'
+
+    = f.submit 'Add comment', class: 'btn btn-small'
