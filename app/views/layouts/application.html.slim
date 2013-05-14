@@ -11,5 +11,6 @@ html
     .container-fluid
       .row-fluid
         .span9
-          == render 'shared/flash', flash: flash
-          = yield
+          .main
+            == render 'shared/flash', flash: flash
+            = yield

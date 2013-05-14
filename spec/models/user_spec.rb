@@ -38,6 +38,7 @@ describe User do
   it { should respond_to(:roles) }
   it { should respond_to(:assignments) }
   it { should respond_to(:role?) }
+  it { should respond_to(:comments) }
 
   it { should be_valid }
 
@@ -121,8 +122,7 @@ describe User do
   end
 
   it 'create auth token when user created' do
-    @user.save!
-    @user.auth_token.should be_present
+    user.auth_token.should be_present
   end
 
   it 'generated token should be unique' do
@@ -146,13 +146,12 @@ describe User do
     let(:some_role) { create(:role) }
 
     it 'with assigned role return true' do
-      @user.save
-      @user.assignments.create!(role_id: some_role.id)
-      @user.role?(some_role.name.to_sym).should be_true
+      user.assignments.create!(role_id: some_role.id)
+      user.role?(some_role.name.to_sym).should be_true
     end
 
     it 'with no assigned role return false' do
-      @user.role?(:role).should be_false
+      user.role?(:role).should be_false
     end
   end
 end

@@ -144,12 +144,12 @@ describe 'Post pages' do
 
     it 'should delete a post' do
       expect do
-        first('div.posts a[@data-method="delete"]').click
+        find("#delete_#{Post.first.id}").click
       end.to change(Post, :count).by(-1)
     end
 
     describe 'after destruction' do
-      before { first('div.posts a[@data-method="delete"]').click }
+      before { find("#delete_#{Post.first.id}").click }
 
       it { current_path.should == '/' }
       it { should have_success_message('Post was deleted!') }
@@ -158,51 +158,108 @@ describe 'Post pages' do
 
   describe 'index' do
     before do
-      create(:post)
-      create(:post)
-      visit '/'
+      create_list(:post, 2)
+      visit root_path
     end
-    let(:posts) { Post.all }
 
     it 'should not show edit icon to user not have permissions to edit' do
-      should_not have_link('', href: edit_post_path(posts[0]))
+      should_not have_link('', href: edit_post_path(Post.first))
     end
 
     it 'should not show delete icon to user not have permissions to delete' do
-      should_not have_selector('div.posts a[@data-method="delete"]')
+      should_not have_selector("#delete_#{Post.first.id}")
     end
 
     it 'should render posts' do
-      posts.each do |post|
+      Post.all.each do |post|
         should have_headline(post.title)
         should have_selector('time', text: post.created_at.to_s(:long))
         should have_content(truncate(post.content, length: 1000, separator: ' '))
       end
     end
 
-    describe 'pagination' do
-      before do
-        10.times { create(:post) }
-        visit '/'
-        click_link '2'
+    it 'pagination should list second page properly' do
+      create_list(:post, 11)
+      visit root_path
+      click_link '2'
+      Post.paginate(page: 2, per_page: 10).each do |post|
+        should have_content(post.content)
       end
-      after  { Post.delete_all }
+    end
 
-      it 'should list second page properly' do
-        Post.paginate(page: 2, per_page: 10).each do |post|
-          should have_content(post.content)
-        end
-      end
+    it 'display count of post comments' do
+      post = Post.first
+      comments = create_list(:comment, 2, post_id: post.id)
+      visit root_path
+      should have_link(comments.count.to_s, href: "#{post_path(post)}/#comments")
     end
   end
 
   describe 'show page' do
-    let(:post) { create(:post) }
-    before { visit "/posts/#{post.id}" }
+    before { @post = create(:post) }
 
-    it { should have_title(post.title) }
-    it { should have_headline(post.title) }
-    it { should have_selector('time', text: post.created_at.to_s(:long)) }
-    it { should have_content(post.content) }
+    it 'display properly' do
+      visit post_path(@post)
+      should have_title(@post.title)
+      should have_headline(@post.title)
+      should have_selector('article time', text: @post.created_at.to_s(:long))
+      should have_content(@post.content)
+    end
+
+    describe 'with comments' do
+
+      it 'display count of comments' do
+        comments = create_list(:comment, 2, post_id: @post.id)
+        visit post_path(@post)
+        should have_selector('h4', text: comments.count.to_s)
+      end
+
+      it 'display all comments belongs to post' do
+        comments = create_list(:comment, 2, post_id: @post.id)
+        visit post_path(@post)
+        comments.each do |comment|
+          should have_content(comment.body)
+        end
+      end
+
+      it 'do not display comments do not belongs to post' do
+        comment = create(:comment)
+        visit post_path(@post)
+        should_not have_content(comment.body)
+      end
+
+      it 'display user name for comment created by signed in user' do
+        user = create(:user)
+        comment = build(:comment, post_id: @post.id)
+        comment.user_id = user.id
+        comment.save
+        visit post_path(@post)
+        should have_content(user.name)
+      end
+
+      it 'display "guest" as username for comment created by guest' do
+        comment = create(:comment, post_id: @post.id)
+        visit post_path(@post)
+        should have_content('Guest')
+      end
+
+      it 'display comment creation date' do
+        comment = create(:comment, post_id: @post.id)
+        visit post_path(@post)
+        should have_content(comment.created_at.to_s(:long))
+      end
+
+      it 'do not display delete link to user have no permission' do
+        comment = create(:comment, post_id: @post.id)
+        visit post_path(@post)
+        should_not have_selector("#delete_#{comment.id}")
+      end
+
+      it 'display deleted comment as dots' do
+        comment = create(:comment, body: '#deleted#',  post_id: @post.id)
+        visit post_path(@post)
+        should have_content('......')
+      end
+    end
   end
 end

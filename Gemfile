@@ -5,25 +5,26 @@ gem 'slim-rails',              '1.1.0'
 gem 'bootstrap-sass',          '2.3.0.1'
 gem 'pg',                      '0.14.1'
 gem 'bcrypt-ruby',             '3.0.1'
-gem 'faker',                   '1.1.2'
+gem 'faker'
 gem 'will_paginate',           '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
-gem 'jquery-rails',            '2.2.1'
+gem 'jquery-rails'
 gem 'font-awesome-sass-rails'
 gem 'cancan'
+gem 'simple_captcha', git: 'git://github.com/galetahub/simple-captcha.git'
 
 group :development, :test do
   gem 'rspec-rails',     '2.13.0'
   gem 'guard-rspec'
-  gem 'rails-footnotes', '3.7.9'
-  gem 'fuubar',          '1.1.0'
+  gem 'rails-footnotes'
+  gem 'fuubar'
   gem 'parallel_tests'
 end
 
 group :development do
-  gem 'annotate',         '2.5.0'
-  gem 'guard-livereload', '1.1.3'
-  gem 'guard-rails',      '0.4.0'
+  gem 'annotate'
+  gem 'guard-livereload'
+  gem 'guard-rails'
   gem 'guard-spork'
 end
 
@@ -34,9 +35,9 @@ group :assets do
 end
 
 group :test do
-  gem 'capybara', 	        '2.0.2'
-  gem 'rb-inotify',         '0.9.0'
-  gem 'factory_girl_rails', '4.2.1'
-  gem 'database_cleaner',   '0.9.1'
+  gem 'capybara'
+  gem 'rb-inotify'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
   gem 'capybara-email'
 end

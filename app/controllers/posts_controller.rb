@@ -6,6 +6,8 @@ class PostsController < ApplicationController
   end
 
   def show
+    @comment = @post.comments.build
+    @comments = @post.comments.includes(:user)
   end
 
   def new

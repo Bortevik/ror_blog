@@ -12,6 +12,8 @@
 class Post < ActiveRecord::Base
   attr_accessible :content, :title
 
+  has_many :comments
+
   default_scope order: 'created_at DESC'
 
   validates :title, :content, presence: true

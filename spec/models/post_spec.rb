@@ -20,6 +20,8 @@ describe Post do
 
   it { should respond_to(:title) }
   it { should respond_to(:content) }
+  it { should respond_to(:comments) }
+  it { should respond_to(:comments_count) }
 
   it { should be_valid }
 
@@ -38,10 +40,9 @@ describe Post do
     it { should_not be_valid }
   end
 
-  describe 'with right order' do
-    let!(:older_post) { FactoryGirl.create(:post, created_at: 1.day.ago) }
-    let!(:newer_post) { FactoryGirl.create(:post, created_at: 1.hour.ago) }
-
-    specify { Post.all.should == [newer_post, older_post] }
+  it 'should have right order' do
+    older_post = create(:post, created_at: 1.day.ago)
+    newer_post = create(:post, created_at: 1.hour.ago)
+    Post.all.should == [newer_post, older_post]
   end
 end

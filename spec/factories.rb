@@ -33,4 +33,9 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :comment do
+    body { generate(:random_string) }
+    post
+  end
 end
