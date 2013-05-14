@@ -16,7 +16,8 @@
     - if can? :update, post
       =' link_to icon('pencil'), edit_post_path(post)
     - if can? :destroy, post
-      =' link_to icon('trash'), post_path(post),\
-                               class: 'red',\
-                               method: :delete,\
+      =' link_to icon('trash'), post_path(post),
+                               class: 'red',
+                               id: "delete_#{post.id}",
+                               method: :delete,
                                confirm: 'Are you sure?'

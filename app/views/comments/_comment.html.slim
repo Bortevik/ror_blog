@@ -8,8 +8,10 @@ a name="comment_#{comment.id}"
       =' time_tag comment.created_at
       =' link_to '#', "#comment_#{comment.id}", class: 'link_to_comment'
       - if can? :destroy, comment
-        =' link_to icon('trash'), comment_path(comment), method: :delete,
-                                                         confirm: 'Are you sure?',
-                                                         class: 'red'
+        =' link_to icon('trash'), comment_path(comment),
+                                  method: :delete,
+                                  confirm: 'Are you sure?',
+                                  class: 'red',
+                                  id: "delete_#{comment.id}"
     .body
       = comment.body

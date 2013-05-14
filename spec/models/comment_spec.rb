@@ -34,4 +34,10 @@ describe Comment do
       comment.destroy
     end.to change{ post.reload.comments_count }.by(-1)
   end
+
+  it 'should have right order' do
+    newer_comment = create(:comment, created_at: 1.hour.ago)
+    older_comment = create(:comment, created_at: 1.day.ago)
+    Comment.all.should == [older_comment, newer_comment]
+  end
 end

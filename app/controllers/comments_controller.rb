@@ -5,8 +5,12 @@ class CommentsController < ApplicationController
   def create
     redirect_without_post
     comment = @post.comments.build(params[:comment])
-    comment.user_id = current_user.try(:id) # nil as Guest
-    comment.save
+    if comment.valid_with_captcha?
+      comment.user_id = current_user.try(:id) # nil as Guest
+      comment.save
+    else
+      flash[:error] = 'Secret Code did not match with the Image'
+    end
     redirect_to post_url(@post)
   end
 

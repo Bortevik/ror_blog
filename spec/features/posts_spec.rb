@@ -144,12 +144,12 @@ describe 'Post pages' do
 
     it 'should delete a post' do
       expect do
-        first('div.posts a[@data-method="delete"]').click
+        find("#delete_#{Post.first.id}").click
       end.to change(Post, :count).by(-1)
     end
 
     describe 'after destruction' do
-      before { first('div.posts a[@data-method="delete"]').click }
+      before { find("#delete_#{Post.first.id}").click }
 
       it { current_path.should == '/' }
       it { should have_success_message('Post was deleted!') }
@@ -167,7 +167,7 @@ describe 'Post pages' do
     end
 
     it 'should not show delete icon to user not have permissions to delete' do
-      should_not have_selector('div.posts a[@data-method="delete"]')
+      should_not have_selector("#delete_#{Post.first.id}")
     end
 
     it 'should render posts' do
@@ -246,20 +246,19 @@ describe 'Post pages' do
       it 'display comment creation date' do
         comment = create(:comment, post_id: @post.id)
         visit post_path(@post)
-        should have_selector('.comment time',
-                             text: comment.created_at.to_s(:long))
+        should have_content(comment.created_at.to_s(:long))
       end
 
       it 'do not display delete link to user have no permission' do
         comment = create(:comment, post_id: @post.id)
         visit post_path(@post)
-        should_not have_selector('.comment_creation a[@data-method="delete"]')
+        should_not have_selector("#delete_#{comment.id}")
       end
 
       it 'display deleted comment as dots' do
         comment = create(:comment, body: '#deleted#',  post_id: @post.id)
         visit post_path(@post)
-        should have_selector('div.comment', text: '......')
+        should have_content('......')
       end
     end
   end
