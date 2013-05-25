@@ -80,9 +80,16 @@ describe User do
   end
 
   it 'is invalid when email already is taken' do
-    user_with_same_email = @user.dup
+    user_with_same_email = create(:user, email: @user.email)
     user_with_same_email.email.upcase!
     user_with_same_email.save
+    should_not be_valid
+  end
+
+  it 'is invalid when name already is taken' do
+    user_with_same_name = create(:user, name: @user.name)
+    user_with_same_name.name.upcase!
+    user_with_same_name.save
     should_not be_valid
   end
 

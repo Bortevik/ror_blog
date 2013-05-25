@@ -3,6 +3,8 @@
 .row-fluid
   .span10.offset1
     h1 Edit post
-    = form_for(@post) do |f|
-      = render 'form_fields', f: f
-      = f.submit 'Update post', class: "btn"
+    = simple_form_for(@post) do |f|
+      = f.input :title
+      = f.input :content
+      = f.input :tag_names
+      = f.button :submit, 'Update post'

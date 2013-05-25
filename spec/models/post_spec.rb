@@ -22,6 +22,8 @@ describe Post do
   it { should respond_to(:content) }
   it { should respond_to(:comments) }
   it { should respond_to(:comments_count) }
+  it { should respond_to(:taggins) }
+  it { should respond_to(:tags) }
 
   it { should be_valid }
 
@@ -44,5 +46,31 @@ describe Post do
     older_post = create(:post, created_at: 1.day.ago)
     newer_post = create(:post, created_at: 1.hour.ago)
     Post.all.should == [newer_post, older_post]
+  end
+
+  describe 'when save' do
+
+    it 'assign new tags' do
+      @post.tag_names = 'foo'
+      @post.save_tag_names
+      @post.tags[0].name.should eq 'foo'
+    end
+
+    it 'with assigned tags increment posts count of tag' do
+      tag = create(:tag)
+      @post.tag_names = tag.name
+      expect do
+        @post.save_tag_names
+      end.to change { tag.reload.posts_count }.by(1)
+    end
+
+    it 'with unassigned tags decrement posts count of tag' do
+      tag = create(:tag, posts_count: 2)
+      @post.tags << tag
+      @post.tag_names = 'another tag'
+      expect do
+        @post.save_tag_names
+      end.to change { tag.reload.posts_count }.by(-1)
+    end
   end
 end

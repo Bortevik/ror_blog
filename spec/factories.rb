@@ -38,4 +38,8 @@ FactoryGirl.define do
     body { generate(:random_string) }
     post
   end
+
+  factory :tag do
+    name { Faker::Lorem.word }
+  end
 end

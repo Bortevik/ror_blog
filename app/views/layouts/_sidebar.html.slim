@@ -1,0 +1,5 @@
+- if can? :create, Post
+  = link_to 'Add post', new_post_path, class: 'btn btn-info'
+
+ul.tags
+  == render tags

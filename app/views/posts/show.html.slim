@@ -5,6 +5,12 @@ article
   = time_tag @post.created_at
   .content = @post.content
 
+  .infopanel
+    -if @post.tags.any?
+      .tags
+        = icon('tag')
+        == tag_links(@post.tags).join(', ')
+
 hr
 == render 'comments/form'
 a name='comments'

@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @posts = Post.paginate(page: params[:page], per_page: 10)
+    @posts = Post.includes(:tags).page(params[:page]).per_page(10)
   end
 
   def show

@@ -6,19 +6,19 @@ gem 'bootstrap-sass',          '2.3.0.1'
 gem 'pg',                      '0.14.1'
 gem 'bcrypt-ruby',             '3.0.1'
 gem 'faker'
-gem 'will_paginate',           '3.0.4'
+gem 'will_paginate'
 gem 'bootstrap-will_paginate', '0.0.9'
 gem 'jquery-rails'
 gem 'font-awesome-sass-rails'
 gem 'cancan'
 gem 'simple_captcha', git: 'git://github.com/galetahub/simple-captcha.git'
+gem 'simple_form'
 
 group :development, :test do
   gem 'rspec-rails',     '2.13.0'
   gem 'guard-rspec'
   gem 'rails-footnotes'
   gem 'fuubar'
-  gem 'parallel_tests'
 end
 
 group :development do
@@ -35,9 +35,9 @@ group :assets do
 end
 
 group :test do
-  gem 'capybara'
+  gem 'capybara', '2.0.3'
   gem 'rb-inotify'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
-  gem 'capybara-email'
+  gem 'capybara-email', '2.0.3'
 end

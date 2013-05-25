@@ -13,4 +13,8 @@ module ApplicationHelper
   def icon(type)
     content_tag(:i, nil, class: "icon-#{type}")
   end
+
+  def tags
+    tags ||= Tag.all
+  end
 end

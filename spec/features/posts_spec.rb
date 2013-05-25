@@ -15,9 +15,8 @@ describe 'Post pages' do
     describe 'after submitting' do
       before { click_button submit }
 
-      it { should have_content('error') }
-      it { should have_content("Title can't be blank") }
-      it { should have_content("Content can't be blank") }
+      it { should have_selector('.post_title span', text: "can't be blank") }
+      it { should have_selector('.post_content span', text: "can't be blank") }
 
       describe 'when title that is too long' do
         before do
@@ -25,7 +24,7 @@ describe 'Post pages' do
           click_button submit
         end
 
-        it { should have_content('Title is too long (maximum is 100 characters)')}
+        it { should have_content('is too long (maximum is 100 characters)')}
       end
     end
   end
@@ -73,13 +72,19 @@ describe 'Post pages' do
     describe 'with valid information' do
       let(:success_message) { 'New post created!' }
       before do
-        fill_in 'Title',   with: 'Post one'
-        fill_in 'Content', with: 'Lorem ipsum'
+        fill_in 'Title',     with: 'Post one'
+        fill_in 'Content',   with: 'Lorem ipsum'
+        fill_in 'Tag names', with: 'foo bar'
       end
 
       it 'should create a post' do
         expect { click_button submit }.to change(Post, :count).by(1)
       end
+
+      it 'should create tags' do
+        expect { click_button submit }.to change(Tag, :count).by(1)
+      end
+
       it_should_behave_like 'save post with valid information'
     end
   end
@@ -131,6 +136,16 @@ describe 'Post pages' do
       it 'should not create a new post' do
         expect { click_button submit }.not_to change(Post, :count)
       end
+
+      it 'should update tags' do
+        post = create(:post, tag_names: 'foo bar, blah')
+        visit edit_post_path(post)
+        fill_in 'Tag names', with: 'boom'
+        expect do
+          click_button submit
+        end.to change { post.tags.pluck(:name).join(', ') }.from('foo bar, blah').to('boom')
+      end
+
       it_should_behave_like 'save post with valid information'
     end
   end
@@ -158,16 +173,16 @@ describe 'Post pages' do
 
   describe 'index' do
     before do
-      create_list(:post, 2)
+      @post = create(:post)
       visit root_path
     end
 
     it 'should not show edit icon to user not have permissions to edit' do
-      should_not have_link('', href: edit_post_path(Post.first))
+      should_not have_link('', href: edit_post_path(@post))
     end
 
     it 'should not show delete icon to user not have permissions to delete' do
-      should_not have_selector("#delete_#{Post.first.id}")
+      should_not have_selector("#delete_#{@post.id}")
     end
 
     it 'should render posts' do
@@ -188,22 +203,39 @@ describe 'Post pages' do
     end
 
     it 'display count of post comments' do
-      post = Post.first
-      comments = create_list(:comment, 2, post_id: post.id)
+      comments = create_list(:comment, 2, post_id: @post.id)
       visit root_path
-      should have_link(comments.count.to_s, href: "#{post_path(post)}/#comments")
+      should have_link(comments.count.to_s, href: "#{post_path(@post)}/#comments")
+    end
+
+    it 'display post tags' do
+      @post.tag_names = 'foo'
+      @post.save
+      visit root_path
+      within '.infopanel' do
+        should have_link('foo', href: tag_path(@post.tags[0]))
+      end
     end
   end
 
   describe 'show page' do
     before { @post = create(:post) }
 
-    it 'display properly' do
+    it 'display post properly' do
       visit post_path(@post)
       should have_title(@post.title)
       should have_headline(@post.title)
       should have_selector('article time', text: @post.created_at.to_s(:long))
       should have_content(@post.content)
+    end
+
+    it 'display post tags' do
+      @post.tag_names = 'foo'
+      @post.save
+      visit post_path(@post)
+      within '.infopanel' do
+        should have_link('foo', href: tag_path(@post.tags[0]))
+      end
     end
 
     describe 'with comments' do

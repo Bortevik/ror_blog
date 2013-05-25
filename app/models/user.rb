@@ -10,10 +10,11 @@ class User < ActiveRecord::Base
   before_create { generate_token :auth_token }
 
   validates :name, :email, :password_confirmation, presence: true
-  validates :name, length: { minimum: 3, maximum: 50 }
+  validates :name, length: { minimum: 3, maximum: 50 },
+    uniqueness: { case_sensitive: false }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, format: { with: VALID_EMAIL_REGEX },
-                    uniqueness: { case_sensitive: false }
+    uniqueness: { case_sensitive: false }
   validates :password, presence: true, on: :update
 
   default_scope order: 'name'

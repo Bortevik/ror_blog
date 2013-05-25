@@ -33,7 +33,7 @@ describe 'Comments' do
       sign_in create(:admin)
       visit post_path(post)
       expect do
-        click_link('', href: comment_path(comment))
+        click_link(href: comment_path(comment))
       end.to change{ comment.reload.body }.from('comment').to('#deleted#')
     end
   end

@@ -7,11 +7,14 @@
     = truncate(post.content, length: 1000, separator: ' ')
 
   .infopanel
-    a.comments-count href="#{post_path(post)}/#comments"
-      =' icon('comments-alt')
-      =' post.comments_count
+    -if post.tags.any?
+      .tags
+        = icon('tag')
+        == tag_links(post.tags).join(', ')
 
-    = link_to 'Read more →', post, class: 'btn btn-small pull-right'
+    .comments-count
+      = icon('comments-alt')
+      = link_to post.comments_count, "#{post_path(post)}/#comments"
 
     - if can? :update, post
       =' link_to icon('pencil'), edit_post_path(post)
@@ -21,3 +24,5 @@
                                id: "delete_#{post.id}",
                                method: :delete,
                                confirm: 'Are you sure?'
+
+    = link_to 'Read more →', post, class: 'btn btn-small pull-right'

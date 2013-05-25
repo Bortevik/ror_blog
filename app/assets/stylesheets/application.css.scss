@@ -46,8 +46,13 @@ textarea {
 }
 
 .main {
-  padding-top: 20px;
-  padding-left: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.sidebar {
+  margin-top: 20px;
+  margin-right: 20px;
 }
 
 /* typography */
@@ -92,6 +97,13 @@ a {
   }
   &.red {
     color: $red;
+  }
+  &.btn {
+    color: $grayDark;
+  }
+  &.btn-primary, &.btn-warning, &.btn-danger,
+  &.btn-info, &.btn-success, &.btn-inverse {
+    color: $white;
   }
 }
 
@@ -156,21 +168,37 @@ input {
     .content {
       margin-bottom: 10px;
     }
-    .infopanel {
-      padding: 10px;
-      margin-top: 5px;
-      font-size: 0.9em;
-      color: $gray;
-      a {
-        margin-right: 10px;
-        text-decoration: none;
-      }
+  }
+}
+.infopanel {
+  font-size: 0.9em;
+  color: $gray;
+  .tags, .comments-count {
+    display: inline-block;
+    margin-right: 20px;
+    a {
+      text-decoration: underline;
     }
+  }
+  .comments-count a:visited {
+    color: #6DA3BD;
+  }
+  i {
+    margin-right:5px;
+  }
+  .tags {
+    a {
+      font-size: 0.9em;
+    }
+    @include gray_link;
   }
 }
 
 /* post */
 
+article .content {
+  margin-bottom: 10px;
+}
 time {
   margin-right: 10px;
   font-size: 0.8em;
@@ -179,10 +207,6 @@ time {
 
 .read-more {
   min-height: 30px;
-}
-
-.icon-remove {
-  color: red;
 }
 
 .comment_form {
@@ -221,9 +245,32 @@ time {
   }
 }
 
-.users {
-  a.red {
-    color: darkred;
+/* pagination */
+
+.pagination .disabled {
+  display: none;
+}
+
+/* sidebar */
+
+.sidebar {
+  .btn {
+    margin-bottom: 10px;
   }
-  @include gray_link
+  ul {
+    margin: 0;
+    list-style-type: none;
+    a:visited {
+      color: #6DA3BD;
+    }
+    span {
+      padding: 0 3px;
+      border-right: 2px solid #ccc;
+      border-left: 2px solid #ccc;
+      border-radius: 5px;
+      font-size: 0.7em;
+      font-weight: bold;
+      color: $grayLight;
+    }
+  }
 }

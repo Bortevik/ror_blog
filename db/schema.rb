@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130514155634) do
+ActiveRecord::Schema.define(:version => 20130521121748) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "user_id"
@@ -54,6 +54,24 @@ ActiveRecord::Schema.define(:version => 20130514155634) do
   end
 
   add_index "simple_captcha_data", ["key"], :name => "idx_key"
+
+  create_table "taggins", :force => true do |t|
+    t.integer  "post_id"
+    t.integer  "tag_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "taggins", ["post_id", "tag_id"], :name => "index_taggins_on_post_id_and_tag_id", :unique => true
+  add_index "taggins", ["post_id"], :name => "index_taggins_on_post_id"
+  add_index "taggins", ["tag_id"], :name => "index_taggins_on_tag_id"
+
+  create_table "tags", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.integer  "posts_count", :default => 0
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name"
