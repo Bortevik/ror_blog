@@ -26,6 +26,9 @@ group :development do
   gem 'guard-livereload'
   gem 'guard-rails'
   gem 'guard-spork'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
 end
 
 group :assets do

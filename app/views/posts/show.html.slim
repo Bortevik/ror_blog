@@ -20,5 +20,5 @@ a name='comments'
   .comments
     h4
       =' icon('comments-alt')
-      | Comments(#{@comments.count})
+      | Comments(#{@post.comments_count})
     == render @comments
