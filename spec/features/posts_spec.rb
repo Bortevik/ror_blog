@@ -189,16 +189,18 @@ describe 'Post pages' do
       Post.all.each do |post|
         should have_headline(post.title)
         should have_selector('time', text: post.created_at.to_s(:long))
-        should have_content(truncate(post.content, length: 1000, separator: ' '))
+        should have_content(truncate(post.content, length: 1, separator: '<!--more-->'))
       end
     end
 
     it 'pagination should list second page properly' do
       create_list(:post, 11)
       visit root_path
-      click_link '2'
-      Post.paginate(page: 2, per_page: 10).each do |post|
-        should have_content(post.content)
+      within '.pagination' do
+        click_link '2'
+      end
+      Post.page(2).per_page(10).each do |post|
+        should have_content(truncate(post.content, length: 1, separator: '<!--more-->'))
       end
     end
 

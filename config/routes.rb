@@ -19,6 +19,8 @@ RorBlog::Application.routes.draw do
   # Static pages
   match 'about' => "static_pages#about"
 
+  mount Markitup::Rails::Engine, at: 'markitup', as: 'markitup'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
