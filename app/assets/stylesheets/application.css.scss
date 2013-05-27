@@ -1,4 +1,6 @@
 /*
+ *= require markitup/skins/simple/style
+ *= require markitup/sets/markdown/style
  *= require_self
  *= require_tree .
  *= require _font-awesome
@@ -53,6 +55,10 @@ textarea {
 .sidebar {
   margin-top: 20px;
   margin-right: 20px;
+}
+
+pre {
+  padding: 0;
 }
 
 /* typography */
@@ -272,5 +278,57 @@ time {
       font-weight: bold;
       color: $grayLight;
     }
+  }
+}
+
+/* markitup */
+
+.markItUpEditor {
+  width: 100%;
+}
+
+.markItUp {
+  width: 100%
+}
+
+iframe {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.post_content iframe {
+  height: 600px;
+}
+
+.comment_form .markItUp {
+  .markItUpEditor {
+    height: 100px;
+  }
+  iframe {
+    height: 250px;
+  }
+  .markItUpButton1 a {
+    background-image: url(/assets/markitup/sets/markdown/bold.png)
+  }
+  .markItUpButton2 a {
+    background-image: url(/assets/markitup/sets/markdown/italic.png)
+  }
+  .markItUpButton3 a {
+    background-image: url(/assets/markitup/sets/markdown/list-bullet.png)
+  }
+  .markItUpButton4 a {
+    background-image: url(/assets/markitup/sets/markdown/list-numeric.png)
+  }
+  .markItUpButton5 a {
+    background-image: url(/assets/markitup/sets/markdown/picture.png)
+  }
+  .markItUpButton6 a {
+    background-image: url(/assets/markitup/sets/markdown/link.png)
+  }
+  .markItUpButton7 a {
+    background-image: url(/assets/markitup/sets/markdown/quotes.png)
+  }
+  .markItUpButton8 a {
+    background-image: url(/assets/markitup/sets/markdown/code.png)
   }
 }

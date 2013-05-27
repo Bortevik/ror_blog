@@ -1,0 +1,124 @@
+pre code {
+  display: block;
+  padding: 0.5em;
+  background: #232323;
+  color: #DCDCDC;
+}
+
+pre .keyword,
+pre .tag,
+pre .lisp .title,
+pre .nginx .title,
+pre .request,
+pre .status,
+pre .clojure .attribute {
+  color: #CB7832;
+}
+
+pre .django .template_tag,
+pre .django .variable,
+pre .django .filter .argument {
+  color: #DCDCDC;
+}
+
+pre .date {
+  color: #8CD0D3;
+}
+
+pre .dos .envvar,
+pre .css .class,
+pre .dos .stream,
+pre .apache .sqbracket {
+  color: #EFDCBC;
+}
+
+pre .variable,
+pre .dos .flow,
+pre .diff .change,
+pre .python .exception,
+pre .python .built_in,
+pre .literal,
+pre .tex .special {
+  color: #EFEFAF;
+}
+
+pre .diff .chunk,
+pre .comment {
+  color: #8F8F8F;
+}
+
+pre .dos .keyword,
+pre .css .attribute,
+pre .python .decorator,
+pre .title,
+pre .constant,
+pre .haskell .type,
+pre .diff .header,
+pre .ruby .class .parent,
+pre .apache .tag,
+pre .nginx .built_in,
+pre .tex .command,
+pre .prompt {
+    color: #ffc56d;
+}
+
+pre .dos .winutils,
+pre .string,
+pre .css .string,
+pre .tag .value,
+pre .ruby .symbol .string {
+  color: #a4c260;
+}
+
+pre .number,
+pre .css .keyword,
+pre .ruby .symbol {
+  color: #6c9cbd;
+}
+
+pre .diff .deletion,
+pre .preprocessor,
+pre .built_in,
+pre .sql .aggregate,
+pre .javadoc,
+pre .smalltalk .class,
+pre .smalltalk .localvars,
+pre .smalltalk .array,
+pre .attr_selector,
+pre .pseudo,
+pre .apache .cbracket,
+pre .tex .formula {
+  color: #CC9393;
+}
+
+pre .shebang,
+pre .subst,
+pre .diff .addition,
+pre .java .annotation,
+pre .template_comment,
+pre .pi,
+pre .doctype {
+  color: #7F9F7F;
+}
+
+pre .html .tag,
+pre .html .title,
+pre .xml .tag,
+pre .xml .title,
+pre .css .id,
+pre .regexp {
+  color: #ab8752;
+}
+
+pre .css .rules .value {
+  color: #d0cffe;
+}
+
+pre .coffeescript .javascript,
+pre .javascript .xml,
+pre .tex .formula,
+pre .xml .vbscript,
+pre .xml .cdata {
+  opacity: 0.8;
+}
+
