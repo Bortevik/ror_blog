@@ -3,7 +3,7 @@
 article
   h1.title = @post.title
   = time_tag @post.created_at
-  .content = @post.content
+  .content == markdown @post.content.gsub('<!--more-->', '')
 
   .infopanel
     -if @post.tags.any?

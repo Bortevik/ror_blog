@@ -4,7 +4,7 @@
   .post-info
     = time_tag post.created_at
   .content
-    = truncate(post.content, length: 1000, separator: ' ')
+    == markdown(truncate(post.content, length: 1, separator: '<!--more-->'))
 
   .infopanel
     -if post.tags.any?

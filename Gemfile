@@ -13,6 +13,8 @@ gem 'font-awesome-sass-rails'
 gem 'cancan'
 gem 'simple_captcha', git: 'git://github.com/galetahub/simple-captcha.git'
 gem 'simple_form'
+gem 'redcarpet'
+gem 'markitup-rails'
 
 group :development, :test do
   gem 'rspec-rails',     '2.13.0'

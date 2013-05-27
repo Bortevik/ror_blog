@@ -14,4 +14,4 @@ a name="comment_#{comment.id}"
                                   class: 'red',
                                   id: "delete_#{comment.id}"
     .body
-      = comment.body
+      == markdown comment.body
