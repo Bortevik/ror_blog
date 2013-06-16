@@ -3,7 +3,7 @@ set -e
 set -u
 
 TIMEOUT=${TIMEOUT-60}
-APP_ROOT=/vagrant
+APP_ROOT=/home/deployer/apps/ror_blog/current
 PID=$APP_ROOT/tmp/pids/unicorn.pid
 
 CMD="$APP_ROOT/bin/unicorn -D -c $APP_ROOT/config/unicorn.rb -E production"

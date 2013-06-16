@@ -15,11 +15,12 @@ gem 'simple_captcha', git: 'git://github.com/galetahub/simple-captcha.git'
 gem 'simple_form'
 gem 'redcarpet'
 gem 'markitup-rails'
+gem 'unicorn'
+gem 'capistrano'
 
 group :development, :test do
   gem 'rspec-rails',     '2.13.0'
   gem 'guard-rspec'
-  gem 'rails-footnotes'
   gem 'fuubar'
 end
 
@@ -28,9 +29,9 @@ group :development do
   gem 'guard-livereload'
   gem 'guard-rails'
   gem 'guard-spork'
+  gem 'rails-footnotes'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'meta_request'
 end
 
 group :assets do
